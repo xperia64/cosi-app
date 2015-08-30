@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory
+            android:title="COSI Settings">
+            
+        <CheckBoxPreference
+                android:key="cosiNotify"
+                android:title="Notifications"
+                android:summary="Notify about COSI announcments" />
+        <CheckBoxPreference android:key="darkTheme" android:title="Dark Theme" android:summary="Yep"/>
+ 
+    </PreferenceCategory>
+    
+</PreferenceScreen>         

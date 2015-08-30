@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">COSI</string>
+    <string name="action_settings">Settings</string>
+    <string name="announcement">Announcement</string>
+    <string name="docs">Docs</string>
+    <string name="boostStr">Boost</string>
+    <string name="dockStr">Dock</string>
+    <string name="itemCard">Card View Item</string>
+
+</resources>

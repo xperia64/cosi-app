@@ -15,7 +15,9 @@ package com.xperia64.cosi;
 
 public interface FsuCallback {
 
-	public void dockFsu(String name);
+	public void dockFsu(String name, String amt);
 
-	public void boostFsu(String name);
+	public void boostFsu(String name, String amt);
+
+	public void rename(String aid, String name);
 }

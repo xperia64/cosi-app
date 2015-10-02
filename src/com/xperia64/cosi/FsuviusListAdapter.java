@@ -16,12 +16,17 @@ package com.xperia64.cosi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -53,19 +58,82 @@ public class FsuviusListAdapter extends BaseAdapter implements ListAdapter {
 		});
 	}
 
+	private void renameAlert(final int position)
+	{
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+		 alertDialog.setTitle("Rename");
+		 alertDialog.setMessage("Rename");
+
+		  final EditText input = new EditText(context);  
+		  LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+		                        LinearLayout.LayoutParams.MATCH_PARENT,
+		                        LinearLayout.LayoutParams.MATCH_PARENT);
+		  input.setLayoutParams(lp);
+		  alertDialog.setView(input);
+		 alertDialog.setIcon(R.drawable.ic_launcher);
+
+		 alertDialog.setPositiveButton("Ok",
+		     new DialogInterface.OnClickListener() {
+		         public void onClick(DialogInterface dialog, int which) {
+		        	 fsc.rename(ids[position],input.getText().toString().replace("\r", "")
+		        			 .replace("\n", "").replace("\"", "\\\""));
+		         }
+		     });
+
+		 alertDialog.setNegativeButton("Cancel",
+		     new DialogInterface.OnClickListener() {
+		         public void onClick(DialogInterface dialog, int which) {
+		             dialog.cancel();
+		         }
+		     });
+
+		 alertDialog.show();
+	}
 	@SuppressLint("ViewHolder")
 	public View getView(final int position, View view, ViewGroup parent) {
 		LayoutInflater inflater = context.getLayoutInflater();
 		View rowView = inflater.inflate(R.layout.fsuvius_item, parent, false);
-		Button dock = (Button) rowView.findViewById(R.id.dock);
-		TextView name = (TextView) rowView.findViewById(R.id.name);
-		Button boost = (Button) rowView.findViewById(R.id.boost);
+		
+		rowView.setOnLongClickListener(new OnLongClickListener(){
 
+			@Override
+			public boolean onLongClick(View v) {
+					//
+				 renameAlert(position);
+				 return true;
+				 }
+
+				 });
+				
+		Button dock = (Button) rowView.findViewById(R.id.dock);
+		Button dock10 = (Button) rowView.findViewById(R.id.dock10);
+		TextView name = (TextView) rowView.findViewById(R.id.name);
+		name.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View v) {
+					//
+				 renameAlert(position);
+				 return true;
+				 }
+
+				 });
+		Button boost = (Button) rowView.findViewById(R.id.boost);
+		Button boost10 = (Button) rowView.findViewById(R.id.boost10);
+		
 		dock.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				fsc.dockFsu(ids[position]);
+				fsc.dockFsu(ids[position],"1");
+			}
+
+		});
+		dock10.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				fsc.dockFsu(ids[position],"10");
 			}
 
 		});
@@ -75,7 +143,15 @@ public class FsuviusListAdapter extends BaseAdapter implements ListAdapter {
 
 			@Override
 			public void onClick(View v) {
-				fsc.boostFsu(ids[position]);
+				fsc.boostFsu(ids[position],"1");
+			}
+
+		});
+		boost10.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				fsc.boostFsu(ids[position],"10");
 			}
 
 		});

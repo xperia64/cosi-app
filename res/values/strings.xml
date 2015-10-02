@@ -5,8 +5,10 @@
     <string name="action_settings">Settings</string>
     <string name="announcement">Announcement</string>
     <string name="docs">Docs</string>
-    <string name="boostStr">Boost</string>
-    <string name="dockStr">Dock</string>
+    <string name="boostStr">+1</string>
+    <string name="dockStr">-1</string>
+    <string name="boost10Str">+10</string>
+    <string name="dock10Str">-10</string>
     <string name="itemCard">Card View Item</string>
 
 </resources>

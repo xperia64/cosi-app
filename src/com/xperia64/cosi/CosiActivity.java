@@ -235,7 +235,7 @@ public class CosiActivity extends AppCompatActivity implements MainCallback {
 	public boolean isCosiIP()
 	{
 		String ip = getLocalIpAddress();
-		if(ip!=null&&(ip.startsWith("128.153.144")||ip.startsWith("128.153.145")))
+		if(ip!=null&&(ip.startsWith("128.153.")||ip.startsWith("128.153.")))
 		{
 			return true;
 		}

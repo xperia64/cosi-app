@@ -68,7 +68,7 @@ public class FsuviusFragment extends Fragment implements FsuCallback {
 	final Handler handler = new Handler();
 
 	private String[][] parseData(String json) {
-		// System.out.println("Parsing: "+json);
+		//System.out.println("Parsing: "+json);
 		String[][] result = new String[3][];
 		ArrayList<String> namelist = new ArrayList<String>();
 		ArrayList<String> fsulist = new ArrayList<String>();
@@ -188,7 +188,7 @@ public class FsuviusFragment extends Fragment implements FsuCallback {
 				writer.append("Content-Type: text/plain; charset=" + "UTF-8")
 						.append(LINE_FEED);
 				writer.append(LINE_FEED);
-				writer.append("1").append(LINE_FEED);
+				writer.append(params[1]).append(LINE_FEED);
 				writer.flush();
 				writer.append(LINE_FEED).flush();
 				writer.append("--" + boundary + "--").append(LINE_FEED);
@@ -256,7 +256,7 @@ public class FsuviusFragment extends Fragment implements FsuCallback {
 				writer.append("Content-Type: text/plain; charset=" + "UTF-8")
 						.append(LINE_FEED);
 				writer.append(LINE_FEED);
-				writer.append("1").append(LINE_FEED);
+				writer.append(params[1]).append(LINE_FEED);
 				writer.flush();
 				writer.append("--" + boundary).append(LINE_FEED);
 				writer.append(
@@ -291,16 +291,86 @@ public class FsuviusFragment extends Fragment implements FsuCallback {
 		protected void onProgressUpdate(Void... values) {
 		}
 	}
+	private class RenameFsu extends AsyncTask<String, Void, Void> {
 
+		private static final String LINE_FEED = "\r\n";
+
+		@Override
+		protected Void doInBackground(String... params) {
+			try {
+				URL url = new URL("http://fsuvius.cslabs.clarkson.edu/mv");
+
+				System.out.println("executing");
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setUseCaches(false);
+				connection.setDoOutput(true); // indicates POST method
+				connection.setDoInput(true);
+				connection.setRequestMethod("POST");
+				connection.setDoOutput(true);
+				String boundary = "===" + System.currentTimeMillis() + "===";
+				connection.setRequestProperty("Content-Type",
+						"multipart/form-data; boundary=" + boundary);
+				OutputStream os = connection.getOutputStream();
+				PrintWriter writer = new PrintWriter(new OutputStreamWriter(os,
+						"UTF-8"), true);
+				writer.append("--" + boundary).append(LINE_FEED);
+				writer.append(
+						"Content-Disposition: form-data; name=\"" + "aid"
+								+ "\"").append(LINE_FEED);
+				writer.append("Content-Type: text/plain; charset=" + "UTF-8")
+						.append(LINE_FEED);
+				writer.append(LINE_FEED);
+				writer.append(params[0]).append(LINE_FEED);
+				writer.append("--" + boundary).append(LINE_FEED);
+				writer.append(
+						"Content-Disposition: form-data; name=\"" + "name"
+								+ "\"").append(LINE_FEED);
+				writer.append("Content-Type: text/plain; charset=" + "UTF-8")
+						.append(LINE_FEED);
+				writer.append(LINE_FEED);
+				writer.append(params[1])/*.append(LINE_FEED)*/;
+				writer.flush();
+				writer.append(LINE_FEED).flush();
+				writer.append("--" + boundary + "--").append(LINE_FEED);
+				writer.close();
+				os.close();
+				connection.getResponseCode();
+				connection.disconnect();
+
+			} catch (Exception e) {
+				return null;
+			}
+			return null;
+
+		}
+
+		@Override
+		protected void onPostExecute(Void v) {
+			new GetFsu().execute();
+		}
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+		}
+	}
 	@Override
-	public void dockFsu(String name) {
-		new SubFsu().execute(name);
+	public void dockFsu(String name, String amt) {
+		new SubFsu().execute(name, amt);
 
 	}
 
 	@Override
-	public void boostFsu(String name) {
-		new AddFsu().execute(name);
+	public void boostFsu(String name, String amt) {
+		new AddFsu().execute(name, amt);
 
+	}
+	@Override
+	public void rename(String aid, String name) {
+		new RenameFsu().execute(aid, name);
 	}
 }
